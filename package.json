@@ -1,0 +1,49 @@
+{
+  "name": "gulp-svelte",
+  "version": "0.1.0",
+  "description": "gulp plugin to compile Svelte template to vanilla JavaScript",
+  "repository": "shinnn/gulp-svelte",
+  "author": "Shinnosuke Watanabe (https://github.com/shinnn)",
+  "scripts": {
+    "pretest": "eslint --fix --format=codeframe index.js test.js",
+    "test": "node --throw-deprecation --track-heap-objects test.js",
+    "coverage": "istanbul cover test.js"
+  },
+  "files": [
+    "index.js"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "gulpplugin",
+    "gulp",
+    "svelte",
+    "html",
+    "template",
+    "transform",
+    "transformer",
+    "template",
+    "contents",
+    "compile",
+    "compiler",
+    "vanilla",
+    "fast",
+    "purify"
+  ],
+  "dependencies": {
+    "gulp-util": "^3.0.7",
+    "object-assign": "^4.1.0",
+    "svelte": "^1.0.5",
+    "tryit": "^1.0.3",
+    "vinyl": "^2.0.1",
+    "vinyl-sourcemaps-apply": "^0.2.1"
+  },
+  "devDependencies": {
+    "@shinnn/eslint-config-node-legacy": "^3.0.0",
+    "eslint": "^3.11.1",
+    "istanbul": "^0.4.5",
+    "tape": "^4.6.3"
+  },
+  "eslintConfig": {
+    "extends": "@shinnn/node-legacy"
+  }
+}
