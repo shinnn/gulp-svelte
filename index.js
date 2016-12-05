@@ -35,10 +35,7 @@ module.exports = function gulpSvelte(options) {
       var result;
 
       tryit(function() {
-        result = compile(file.contents.toString(), objectAssign({
-          // https://github.com/sveltejs/svelte/issues/43
-          // filename: file.path
-        }, options));
+        result = compile(file.contents.toString(), objectAssign({filename: file.path}, options));
       }, function(err) {
         if (err) {
           if (file.path) {
@@ -49,10 +46,9 @@ module.exports = function gulpSvelte(options) {
           return;
         }
 
-        // Should re-enable this IF statement when https://github.com/sveltejs/svelte/issues/43 is fixed
-        // if (result.map.file === null) {
-        result.map.file = '__no_filename__';
-        // }
+        if (result.map.file === null) {
+          result.map.file = '__no_filename__';
+        }
 
         file.contents = new Buffer(result.code);
         vinylSourcemapsApply(file.contents, result.map);

@@ -32,7 +32,7 @@
   "dependencies": {
     "gulp-util": "^3.0.7",
     "object-assign": "^4.1.0",
-    "svelte": "^1.0.5",
+    "svelte": "^1.0.7",
     "tryit": "^1.0.3",
     "vinyl": "^2.0.1",
     "vinyl-sourcemaps-apply": "^0.2.1"
