@@ -10,7 +10,7 @@ const svelte = require('.');
 const expected = 'function renderMainFragment ( root, component, target )';
 
 test('gulp-svelte', t => {
-  t.plan(7);
+  t.plan(8);
 
   svelte()
   .on('error', t.fail)
@@ -30,6 +30,20 @@ test('gulp-svelte', t => {
   })
   .end(new File({
     contents: Buffer.from('<p></p>')
+  }));
+
+  svelte()
+  .on('error', t.fail)
+  .on('data', file => {
+    t.strictEqual(
+      file.path,
+      path.resolve('index.js'),
+      'should replace the existing file extension with `.js`.'
+    );
+  })
+  .end(new File({
+    path: path.resolve('index.html'),
+    contents: new Buffer(0)
   }));
 
   svelte()

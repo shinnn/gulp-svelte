@@ -6,6 +6,7 @@ var compile = require('svelte').compile;
 var isVinyl = require('vinyl').isVinyl;
 var objectAssign = require('object-assign');
 var PluginError = require('gulp-util/lib/PluginError');
+var replaceExt = require('replace-ext');
 var Transform = require('stream').Transform;
 var tryit = require('tryit');
 var vinylSourcemapsApply = require('vinyl-sourcemaps-apply');
@@ -48,6 +49,10 @@ module.exports = function gulpSvelte(options) {
 
         if (result.map.file === null) {
           result.map.file = '__no_filename__';
+        }
+
+        if (file.path) {
+          file.path = replaceExt(file.path, '.js');
         }
 
         file.contents = new Buffer(result.code);
