@@ -7,10 +7,10 @@ const File = require('vinyl');
 const test = require('tape');
 const svelte = require('.');
 
-const expected = 'function renderMainFragment ( root, component, target )';
+const expected = 'function renderMainFragment ( root, component ) {';
 
 test('gulp-svelte', t => {
-  t.plan(8);
+  t.plan(9);
 
   svelte()
   .on('error', t.fail)
@@ -32,7 +32,7 @@ test('gulp-svelte', t => {
     contents: Buffer.from('<p></p>')
   }));
 
-  svelte()
+  svelte({css: false})
   .on('error', t.fail)
   .on('data', file => {
     t.strictEqual(
@@ -40,10 +40,16 @@ test('gulp-svelte', t => {
       path.resolve('index.js'),
       'should replace the existing file extension with `.js`.'
     );
+
+    t.strictEqual(
+      file.contents.indexOf('ghostwhite'),
+      -1,
+      'should support compiler options.'
+    );
   })
   .end(new File({
     path: path.resolve('index.html'),
-    contents: new Buffer(0)
+    contents: Buffer.from('<style>*{color:ghostwhite}</style>')
   }));
 
   svelte()
