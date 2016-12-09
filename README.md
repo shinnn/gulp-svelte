@@ -25,16 +25,16 @@ const gulpSvelte = require('gulp-svelte');
 ### gulpSvelte([*options*])
 
 *options*: `Object` (options for [Svelte compiler API](https://github.com/sveltejs/svelte#api))  
-Return: [stream.Transform](https://nodejs.org/api/stream.html#stream_class_stream_transform)
+Return: [`stream.Transform`](https://nodejs.org/api/stream.html#stream_class_stream_transform)
 
 ```javascript
 const gulp = require('gulp');
 const gulpSvelte = require('gulp-svelte');
 
 gulp.task('default', () => {
-  return gulp.src('src.js')
+  return gulp.src('index.html') // index.html: '<h1>Hi {{author}}.</h1>'
     .pipe(gulpSvelte())
-    .dest('dest');
+    .dest('dest'); // dest/index.js: 'function renderMainFragment ( root, component ) { ...'
 });
 ```
 
