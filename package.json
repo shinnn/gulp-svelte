@@ -35,14 +35,14 @@
     "replace-ext": "^1.0.0",
     "svelte": "^1.2.1",
     "tryit": "^1.0.3",
-    "vinyl": "^2.0.1",
     "vinyl-sourcemaps-apply": "^0.2.1"
   },
   "devDependencies": {
     "@shinnn/eslint-config-node-legacy": "^3.0.0",
     "eslint": "^3.11.1",
     "istanbul": "^0.4.5",
-    "tape": "^4.6.3"
+    "tape": "^4.6.3",
+    "vinyl": "^2.0.1"
   },
   "eslintConfig": {
     "extends": "@shinnn/node-legacy"

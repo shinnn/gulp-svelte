@@ -3,7 +3,6 @@
 var inspect = require('util').inspect;
 
 var compile = require('svelte').compile;
-var isVinyl = require('vinyl').isVinyl;
 var objectAssign = require('object-assign');
 var PluginError = require('gulp-util/lib/PluginError');
 var replaceExt = require('replace-ext');
@@ -15,7 +14,7 @@ module.exports = function gulpSvelte(options) {
   return new Transform({
     objectMode: true,
     transform(file, enc, cb) {
-      if (!isVinyl(file)) {
+      if (typeof file.isNull !== 'function') {
         cb(new PluginError('gulp-svelte', new TypeError(
           inspect(file) +
           ' is not a Vinyl file. Expected a Vinyl file object of a Svelte template.'
