@@ -34,7 +34,7 @@ const gulpSvelte = require('gulp-svelte');
 gulp.task('default', () => {
   return gulp.src('index.html') // index.html: '<h1>Hi {{author}}.</h1>'
     .pipe(gulpSvelte())
-    .dest('dest'); // dest/index.js: 'function renderMainFragment ( root, component ) { ...'
+    .pipe(gulp.dest('dest')); // dest/index.js: 'function renderMainFragment ( root, component ) { ...'
 });
 ```
 
