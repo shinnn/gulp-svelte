@@ -30,9 +30,10 @@ Return: [`stream.Transform`](https://nodejs.org/api/stream.html#stream_class_str
 ```javascript
 const gulp = require('gulp');
 const gulpSvelte = require('gulp-svelte');
+const vfs = require('vinyl-fs');
 
 gulp.task('default', () => {
-  return gulp.src('index.html') // index.html: '<h1>Hi {{author}}.</h1>'
+  return vfs.src('index.html') // index.html: '<h1>Hi {{author}}.</h1>'
     .pipe(gulpSvelte())
     .dest('dest'); // dest/index.js: 'function renderMainFragment ( root, component ) { ...'
 });
