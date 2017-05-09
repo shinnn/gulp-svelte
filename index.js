@@ -46,12 +46,11 @@ module.exports = function gulpSvelte(options) {
           return;
         }
 
-        if (result.map.file === null) {
-          result.map.file = '__no_filename__';
-        }
-
         if (file.path) {
           file.path = replaceExt(file.path, '.js');
+          result.map.file = file.path;
+        } else {
+          result.map.file = '__no_filename__';
         }
 
         file.contents = new Buffer(result.code);

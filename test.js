@@ -7,7 +7,7 @@ const File = require('vinyl');
 const test = require('tape');
 const svelte = require('.');
 
-const expected = 'function renderMainFragment ( root, component ) {';
+const expected = 'function create_main_fragment ( state, component ) {';
 
 test('gulp-svelte', t => {
   t.plan(9);
