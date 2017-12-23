@@ -33,7 +33,7 @@
     "gulp-util": "^3.0.8",
     "object-assign": "^4.1.0",
     "replace-ext": "^1.0.0",
-    "svelte": "^1.20.2",
+    "svelte": "^1.49.1",
     "tryit": "^1.0.3",
     "vinyl-sourcemaps-apply": "^0.2.1"
   },
