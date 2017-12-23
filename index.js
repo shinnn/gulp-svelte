@@ -11,6 +11,8 @@ var tryit = require('tryit');
 var vinylSourcemapsApply = require('vinyl-sourcemaps-apply');
 var path = require('path');
 
+// getName copied from svelte-cli
+// https://github.com/sveltejs/svelte-cli/blob/c4ce84f7dda71f0893fff1dfd5522c7509d56c2c/src/tasks/compile/index.js#L127
 function getName(input) {
   return path
     .basename(input)
