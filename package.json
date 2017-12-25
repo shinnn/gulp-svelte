@@ -32,6 +32,7 @@
 		"inspect-with-kind": "^1.0.4",
 		"plugin-error": "^0.1.2",
 		"replace-ext": "^1.0.0",
+		"safe-buffer": "^5.1.1",
 		"svelte": "^1.49.3",
 		"vinyl-sourcemaps-apply": "^0.2.1"
 	},
@@ -43,10 +44,6 @@
 		"vinyl": "^2.1.0"
 	},
 	"eslintConfig": {
-		"extends": "@shinnn/node",
-		"rules": {
-			"no-buffer-constructor": "off",
-			"node/no-deprecated-api": "off"
-		}
+		"extends": "@shinnn/node"
 	}
 }

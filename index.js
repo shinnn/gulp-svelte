@@ -4,6 +4,7 @@ const compile = require('svelte').compile;
 const inspectWithKind = require('inspect-with-kind');
 const PluginError = require('plugin-error');
 const replaceExt = require('replace-ext');
+const SafeBuffer = require('safe-buffer').Buffer;
 const Transform = require('stream').Transform;
 const vinylSourcemapsApply = require('vinyl-sourcemaps-apply');
 
@@ -51,7 +52,7 @@ module.exports = function gulpSvelte(options) {
 				result.map.file = '__no_filename__';
 			}
 
-			file.contents = new Buffer(result.code);
+			file.contents = SafeBuffer.from(result.code);
 			vinylSourcemapsApply(file.contents, result.map);
 
 			cb(null, file);
