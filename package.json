@@ -11,7 +11,7 @@
 	"files": [
 		"index.js"
 	],
-	"license": "MIT",
+	"license": "ISC",
 	"keywords": [
 		"gulpplugin",
 		"gulp",

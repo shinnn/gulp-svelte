@@ -1,6 +1,6 @@
 # gulp-svelte
 
-[![NPM version](https://img.shields.io/npm/v/gulp-svelte.svg)](https://www.npmjs.com/package/gulp-svelte)
+[![npm version](https://img.shields.io/npm/v/gulp-svelte.svg)](https://www.npmjs.com/package/gulp-svelte)
 [![Build Status](https://travis-ci.org/shinnn/gulp-svelte.svg?branch=master)](https://travis-ci.org/shinnn/gulp-svelte)
 [![Coverage Status](https://coveralls.io/repos/github/shinnn/gulp-svelte/badge.svg?branch=master)](https://coveralls.io/github/shinnn/gulp-svelte?branch=master)
 
@@ -8,7 +8,7 @@
 
 ## Installation
 
-[Use npm.](https://docs.npmjs.com/cli/install)
+[Use](https://docs.npmjs.com/cli/install) [npm](https://docs.npmjs.com/getting-started/what-is-npm).
 
 ```
 npm install --save-dev gulp-svelte
@@ -38,6 +38,4 @@ gulp.task('default', () => {
 
 ## License
 
-Copyright (c) 2016 - 2017 [Shinnosuke Watanabe](https://github.com/shinnn)
-
-Licensed under [the MIT License](./LICENSE).
+[ISC License](./LICENSE) © 2017 Shinnosuke Watanabe
