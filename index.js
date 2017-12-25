@@ -1,8 +1,7 @@
 'use strict';
 
-const inspect = require('util').inspect;
-
 const compile = require('svelte').compile;
+const inspectWithKind = require('inspect-with-kind');
 const PluginError = require('plugin-error');
 const replaceExt = require('replace-ext');
 const Transform = require('stream').Transform;
@@ -12,9 +11,13 @@ module.exports = function gulpSvelte(options) {
 	return new Transform({
 		objectMode: true,
 		transform(file, enc, cb) {
-			if (typeof file.isNull !== 'function') {
-				cb(new PluginError('gulp-svelte', new TypeError(`${inspect(file)
-				} is not a Vinyl file. Expected a Vinyl file object of a Svelte template.`)));
+			if (!file || typeof file !== 'object' || typeof file.isNull !== 'function') {
+				cb(new PluginError(
+					'gulp-svelte',
+					new TypeError(`Expected a Vinyl file object of a Svelte template, but got a non-Vinyl value ${
+						inspectWithKind(file)
+					}.`)
+				));
 				return;
 			}
 

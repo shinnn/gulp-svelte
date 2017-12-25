@@ -80,9 +80,9 @@ test('gulp-svelte', t => {
 	}));
 
 	svelte()
-	.on('error', err => {
+	.on('error', ({message}) => {
 		t.equal(
-			err.message,
+			message,
 			'Streaming not supported',
 			'should emit an error when it takes a stream-mode file.'
 		);
@@ -90,10 +90,10 @@ test('gulp-svelte', t => {
 	.end(new File({contents: new PassThrough()}));
 
 	svelte()
-	.on('error', err => {
+	.on('error', ({message}) => {
 		t.equal(
-			err.message,
-			'[ \'foo\' ] is not a Vinyl file. Expected a Vinyl file object of a Svelte template.',
+			message,
+			'Expected a Vinyl file object of a Svelte template, but got a non-Vinyl value [ \'foo\' ] (array).',
 			'should emit an error when it takes a non-Vinyl object.'
 		);
 	})
