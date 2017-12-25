@@ -1,63 +1,57 @@
 'use strict';
 
-var inspect = require('util').inspect;
+const inspect = require('util').inspect;
 
-var compile = require('svelte').compile;
-var objectAssign = require('object-assign');
-var PluginError = require('gulp-util/lib/PluginError');
-var replaceExt = require('replace-ext');
-var Transform = require('stream').Transform;
-var tryit = require('tryit');
-var vinylSourcemapsApply = require('vinyl-sourcemaps-apply');
+const compile = require('svelte').compile;
+const PluginError = require('plugin-error');
+const replaceExt = require('replace-ext');
+const Transform = require('stream').Transform;
+const vinylSourcemapsApply = require('vinyl-sourcemaps-apply');
 
 module.exports = function gulpSvelte(options) {
-  return new Transform({
-    objectMode: true,
-    transform(file, enc, cb) {
-      if (typeof file.isNull !== 'function') {
-        cb(new PluginError('gulp-svelte', new TypeError(
-          inspect(file) +
-          ' is not a Vinyl file. Expected a Vinyl file object of a Svelte template.'
-        )));
-        return;
-      }
+	return new Transform({
+		objectMode: true,
+		transform(file, enc, cb) {
+			if (typeof file.isNull !== 'function') {
+				cb(new PluginError('gulp-svelte', new TypeError(`${inspect(file)
+				} is not a Vinyl file. Expected a Vinyl file object of a Svelte template.`)));
+				return;
+			}
 
-      if (file.isNull()) {
-        cb(null, file);
-        return;
-      }
+			if (file.isNull()) {
+				cb(null, file);
+				return;
+			}
 
-      if (file.isStream()) {
-        cb(new PluginError('gulp-svelte', 'Streaming not supported'));
-        return;
-      }
+			if (file.isStream()) {
+				cb(new PluginError('gulp-svelte', 'Streaming not supported'));
+				return;
+			}
 
-      var result;
+			let result;
 
-      tryit(function() {
-        result = compile(file.contents.toString(), objectAssign({filename: file.path}, options));
-      }, function(err) {
-        if (err) {
-          if (file.path) {
-            err.fileName = file.path;
-          }
+			try {
+				result = compile(file.contents.toString(), Object.assign({filename: file.path}, options));
+			} catch (err) {
+				if (file.path) {
+					err.fileName = file.path;
+				}
 
-          cb(new PluginError('gulp-svelte', err));
-          return;
-        }
+				cb(new PluginError('gulp-svelte', err));
+				return;
+			}
 
-        if (file.path) {
-          file.path = replaceExt(file.path, '.js');
-          result.map.file = file.path;
-        } else {
-          result.map.file = '__no_filename__';
-        }
+			if (file.path) {
+				file.path = replaceExt(file.path, '.js');
+				result.map.file = file.path;
+			} else {
+				result.map.file = '__no_filename__';
+			}
 
-        file.contents = new Buffer(result.code);
-        vinylSourcemapsApply(file.contents, result.map);
+			file.contents = new Buffer(result.code);
+			vinylSourcemapsApply(file.contents, result.map);
 
-        cb(null, file);
-      });
-    }
-  });
+			cb(null, file);
+		}
+	});
 };

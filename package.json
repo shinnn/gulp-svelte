@@ -1,50 +1,51 @@
 {
-  "name": "gulp-svelte",
-  "version": "0.4.0",
-  "description": "gulp plugin to compile Svelte template to vanilla JavaScript",
-  "repository": "shinnn/gulp-svelte",
-  "author": "Shinnosuke Watanabe (https://github.com/shinnn)",
-  "scripts": {
-    "pretest": "eslint --fix --format=codeframe index.js test.js",
-    "test": "node --throw-deprecation --track-heap-objects test.js",
-    "coverage": "istanbul cover test.js"
-  },
-  "files": [
-    "index.js"
-  ],
-  "license": "MIT",
-  "keywords": [
-    "gulpplugin",
-    "gulp",
-    "svelte",
-    "html",
-    "template",
-    "transform",
-    "transformer",
-    "template",
-    "contents",
-    "compile",
-    "compiler",
-    "vanilla",
-    "fast",
-    "purify"
-  ],
-  "dependencies": {
-    "gulp-util": "^3.0.8",
-    "object-assign": "^4.1.0",
-    "replace-ext": "^1.0.0",
-    "svelte": "^1.20.2",
-    "tryit": "^1.0.3",
-    "vinyl-sourcemaps-apply": "^0.2.1"
-  },
-  "devDependencies": {
-    "@shinnn/eslint-config-node-legacy": "^3.0.0",
-    "eslint": "^3.19.0",
-    "istanbul": "^0.4.5",
-    "tape": "^4.6.3",
-    "vinyl": "^2.0.2"
-  },
-  "eslintConfig": {
-    "extends": "@shinnn/node-legacy"
-  }
+	"name": "gulp-svelte",
+	"version": "0.4.0",
+	"description": "gulp plugin to compile Svelte template to vanilla JavaScript",
+	"repository": "shinnn/gulp-svelte",
+	"author": "Shinnosuke Watanabe (https://github.com/shinnn)",
+	"scripts": {
+		"pretest": "eslint --fix --format=codeframe index.js test.js",
+		"test": "nyc node test.js"
+	},
+	"files": [
+		"index.js"
+	],
+	"license": "MIT",
+	"keywords": [
+		"gulpplugin",
+		"gulp",
+		"svelte",
+		"html",
+		"template",
+		"transform",
+		"transformer",
+		"template",
+		"contents",
+		"compile",
+		"compiler",
+		"vanilla",
+		"fast",
+		"purify"
+	],
+	"dependencies": {
+		"plugin-error": "^0.1.2",
+		"replace-ext": "^1.0.0",
+		"svelte": "^1.49.3",
+		"vinyl-sourcemaps-apply": "^0.2.1"
+	},
+	"devDependencies": {
+		"@shinnn/eslint-config-node": "^5.0.0",
+		"eslint": "^4.14.0",
+		"nyc": "^11.4.1",
+		"tape": "^4.8.0",
+		"vinyl": "^2.1.0"
+	},
+	"eslintConfig": {
+		"extends": "@shinnn/node",
+		"rules": {
+			"no-buffer-constructor": "off",
+			"node/no-deprecated-api": "off"
+		}
+	}
 }
