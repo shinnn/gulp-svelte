@@ -46,13 +46,13 @@ module.exports = function gulpSvelte(options) {
 
 			if (file.path) {
 				file.path = replaceExt(file.path, '.js');
-				result.map.file = file.path;
+				result.js.map.file = file.path;
 			} else {
-				result.map.file = '__no_filename__';
+				result.js.map.file = '__no_filename__';
 			}
 
-			file.contents = Buffer.from(result.code);
-			vinylSourcemapsApply(file.contents, result.map);
+			file.contents = Buffer.from(result.js.code);
+			vinylSourcemapsApply(file.contents, result.js.map);
 
 			cb(null, file);
 		}

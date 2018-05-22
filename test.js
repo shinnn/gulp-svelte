@@ -49,7 +49,7 @@ test('gulp-svelte', t => {
 	})
 	.end(new File({
 		path: resolve('index.html'),
-		contents: Buffer.from('<style>*{color:ghostwhite}</style>')
+		contents: Buffer.from('<style>*{color:ghostwhite}</style><b></b>')
 	}));
 
 	svelte()
