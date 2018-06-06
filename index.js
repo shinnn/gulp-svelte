@@ -1,13 +1,19 @@
 'use strict';
 
-const compile = require('svelte').compile;
+const {compile} = require('svelte');
 const inspectWithKind = require('inspect-with-kind');
 const PluginError = require('plugin-error');
 const replaceExt = require('replace-ext');
-const Transform = require('stream').Transform;
+const {Transform} = require('stream');
 const vinylSourcemapsApply = require('vinyl-sourcemaps-apply');
 
-module.exports = function gulpSvelte(options) {
+module.exports = function gulpSvelte(...args) {
+	const argLen = args.length;
+
+	if (argLen > 1) {
+		throw new PluginError('gulp-svelte', new RangeError(`Expected 0 or 1 argument (<Object>), but got ${argLen} arguments.`));
+	}
+
 	return new Transform({
 		objectMode: true,
 		transform(file, enc, cb) {
@@ -34,7 +40,7 @@ module.exports = function gulpSvelte(options) {
 			let result;
 
 			try {
-				result = compile(file.contents.toString(), Object.assign({filename: file.path}, options));
+				result = compile(file.contents.toString(), Object.assign({filename: file.path}, ...args));
 			} catch (err) {
 				if (file.path) {
 					err.fileName = file.path;
