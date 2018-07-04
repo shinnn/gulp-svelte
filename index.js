@@ -50,6 +50,11 @@ module.exports = function gulpSvelte(...args) {
 				return;
 			}
 
+			if (!result) {
+				cb();
+				return;
+			}
+
 			if (file.path) {
 				file.path = replaceExt(file.path, '.js');
 				result.js.map.file = file.path;
