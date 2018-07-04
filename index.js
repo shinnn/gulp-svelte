@@ -55,6 +55,24 @@ module.exports = function gulpSvelte(...args) {
 				return;
 			}
 
+			if (typeof result.css.code === 'string') {
+				const cssFile = file.clone();
+
+				if (file.path) {
+					cssFile.path = replaceExt(file.path, '.css');
+					result.css.map.file = cssFile.path;
+					cssFile.history = [cssFile.path];
+				} else {
+					result.css.map.file = '__no_filename__';
+					result.css.map.sources = ['__no_filename__'];
+				}
+
+				cssFile.contents = Buffer.from(result.css.code);
+				vinylSourcemapsApply(cssFile.contents, result.css.map);
+
+				this.emit('data', cssFile);
+			}
+
 			if (file.path) {
 				file.path = replaceExt(file.path, '.js');
 				result.js.map.file = file.path;
