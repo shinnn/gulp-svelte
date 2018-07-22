@@ -70,7 +70,7 @@ module.exports = function gulpSvelte(...args) {
 				cssFile.contents = Buffer.from(result.css.code);
 				vinylSourcemapsApply(cssFile.contents, result.css.map);
 
-				this.emit('data', cssFile);
+				this.push(cssFile);
 			}
 
 			if (file.path) {
