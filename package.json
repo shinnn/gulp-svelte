@@ -1,7 +1,7 @@
 {
 	"name": "gulp-svelte",
-	"version": "0.7.0-3",
-	"description": "gulp plugin to compile Svelte template to JavaScript",
+	"version": "0.7.0",
+	"description": "gulp plugin to compile Svelte templates to JavaScript",
 	"repository": "shinnn/gulp-svelte",
 	"author": "Shinnosuke Watanabe (https://github.com/shinnn)",
 	"license": "ISC",
