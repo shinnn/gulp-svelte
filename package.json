@@ -4,14 +4,14 @@
 	"description": "gulp plugin to compile Svelte template to JavaScript",
 	"repository": "shinnn/gulp-svelte",
 	"author": "Shinnosuke Watanabe (https://github.com/shinnn)",
+	"license": "ISC",
 	"scripts": {
 		"pretest": "eslint .",
-		"test": "nyc --reporter=html --reporter=text node test.js"
+		"test": "nyc node test.js"
 	},
 	"files": [
 		"index.js"
 	],
-	"license": "ISC",
 	"keywords": [
 		"gulpplugin",
 		"gulp",
@@ -29,21 +29,25 @@
 		"purify"
 	],
 	"dependencies": {
-		"inspect-with-kind": "^1.0.4",
+		"inspect-with-kind": "^1.0.5",
 		"plugin-error": "^1.0.1",
 		"replace-ext": "^1.0.0",
-		"svelte": "^2.9.6",
+		"svelte": "^2.13.4",
 		"vinyl-sourcemaps-apply": "^0.2.1"
 	},
 	"devDependencies": {
-		"@shinnn/eslint-config-node": "^6.0.0",
-		"eslint": "^5.2.0",
-		"lodash": "^4.17.10",
-		"nyc": "^12.0.2",
+		"@shinnn/eslint-config": "^6.7.1",
+		"eslint": "^5.6.0",
+		"lodash": "^4.17.11",
+		"nyc": "^13.0.1",
+		"nyc-config-common": "^1.0.0",
 		"tape": "^4.9.1",
 		"vinyl": "^2.2.0"
 	},
 	"eslintConfig": {
-		"extends": "@shinnn/node"
+		"extends": "@shinnn"
+	},
+	"nyc": {
+		"extends": "nyc-config-common"
 	}
 }

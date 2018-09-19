@@ -140,7 +140,7 @@ test('gulp-svelte', t => {
 test('Argument validation', t => {
 	t.throws(
 		() => svelte({}, {}),
-		/Expected 0 or 1 argument \(<Object>\), but got 2 arguments\./,
+		/Expected 0 or 1 argument \(<Object>\), but got 2 arguments\./u,
 		'should throw an error when it takes too many arguments.'
 	);
 
