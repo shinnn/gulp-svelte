@@ -40,7 +40,7 @@ module.exports = function gulpSvelte(...args) {
 			let result;
 
 			try {
-				result = compile(file.contents.toString(), Object.assign({filename: file.path}, ...args));
+				result = compile(file.contents.toString(), {filename: file.path, ...args[0]});
 			} catch (err) {
 				if (file.path) {
 					err.fileName = file.path;
