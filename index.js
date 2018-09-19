@@ -2,8 +2,8 @@
 
 const {compile} = require('svelte');
 const inspectWithKind = require('inspect-with-kind');
+const {isVinyl} = require('vinyl');
 const PluginError = require('plugin-error');
-const replaceExt = require('replace-ext');
 const {Transform} = require('stream');
 const vinylSourcemapsApply = require('vinyl-sourcemaps-apply');
 
@@ -17,12 +17,17 @@ module.exports = function gulpSvelte(...args) {
 	return new Transform({
 		objectMode: true,
 		transform(file, enc, cb) {
-			if (!file || typeof file !== 'object' || typeof file.isNull !== 'function') {
+			if (!isVinyl(file)) {
+				if (file !== null && typeof file === 'object' && typeof file.isNull === 'function') {
+					cb(new PluginError('gulp-svelte', 'gulp-svelte doesn\'t support gulp <= v3.x. Update your project to use gulp >= v4.0.0.'));
+					return;
+				}
+
 				cb(new PluginError(
 					'gulp-svelte',
-					new TypeError(`Expected a Vinyl file object of a Svelte template, but got a non-Vinyl value ${
+					`Expected a Vinyl file object of a Svelte template, but got a non-Vinyl value ${
 						inspectWithKind(file)
-					}.`)
+					}.`
 				));
 				return;
 			}
@@ -59,7 +64,7 @@ module.exports = function gulpSvelte(...args) {
 				const cssFile = file.clone();
 
 				if (file.path) {
-					cssFile.path = replaceExt(file.path, '.css');
+					cssFile.extname = '.css';
 					result.css.map.file = cssFile.path;
 					cssFile.history = [cssFile.path];
 				} else {
@@ -74,7 +79,7 @@ module.exports = function gulpSvelte(...args) {
 			}
 
 			if (file.path) {
-				file.path = replaceExt(file.path, '.js');
+				file.extname = '.js';
 				result.js.map.file = file.path;
 			} else {
 				result.js.map.file = '__no_filename__';
