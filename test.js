@@ -155,6 +155,12 @@ test('Argument validation', t => {
 	);
 
 	t.throws(
+		() => svelte({format: 'umd'}),
+		/Expected `format` option to be one of `es`, `cjs` and `eval`, but 'umd' is provided\. /u,
+		'should throw an error when `format` option is `amd`, `iife` or `umd`.'
+	);
+
+	t.throws(
 		() => svelte({}, {}),
 		/Expected 0 or 1 argument \(<Object>\), but got 2 arguments\./u,
 		'should throw an error when it takes too many arguments.'

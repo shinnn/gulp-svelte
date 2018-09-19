@@ -14,15 +14,28 @@ module.exports = function gulpSvelte(...args) {
 
 	if (argLen > 1) {
 		throw new PluginError('gulp-svelte', new RangeError(`Expected 0 or 1 argument (<Object>), but got ${argLen} arguments.`));
-	} else if (argLen === 1) {
-		const options = args[0];
+	}
 
+	const options = args[0];
+
+	if (argLen === 1) {
 		if (!isPlainObject(options)) {
 			throw new PluginError(
 				'gulp-svelte',
 				new TypeError(`Expected an options object to set Svelte compiler options https://github.com/sveltejs/svelte#compiler-options, but got ${
 					inspectWithKind(options)
 				}.`)
+			);
+		}
+
+		const {format} = options;
+
+		if (format === 'amd' || format === 'iife' || format === 'umd') {
+			throw new PluginError(
+				'gulp-svelte',
+				`Expected \`format\` option to be one of \`es\`, \`cjs\` and \`eval\`, but '${
+					format
+				}' is provided. gulp-svelte doesn't support legacy JavaScript formats \`amd\`, \`iife\` and \`umd\`.`
 			);
 		}
 	}
@@ -58,7 +71,7 @@ module.exports = function gulpSvelte(...args) {
 			let result;
 
 			try {
-				result = compile(file.contents.toString(), {filename: file.path, ...args[0]});
+				result = compile(file.contents.toString(), {filename: file.path, ...options});
 			} catch (err) {
 				if (file.path) {
 					err.fileName = file.path;
