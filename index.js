@@ -1,5 +1,6 @@
 'use strict';
 
+const {inspect} = require('util');
 const {Transform} = require('stream');
 
 const {compile} = require('svelte');
@@ -28,14 +29,30 @@ module.exports = function gulpSvelte(...args) {
 			);
 		}
 
-		const {format} = options;
+		const {format, generate, onerror} = options;
 
 		if (format === 'amd' || format === 'iife' || format === 'umd') {
 			throw new PluginError(
 				'gulp-svelte',
 				`Expected \`format\` option to be one of \`es\`, \`cjs\` and \`eval\`, but '${
 					format
-				}' is provided. gulp-svelte doesn't support legacy JavaScript formats \`amd\`, \`iife\` and \`umd\`.`
+				}' was provided. gulp-svelte doesn't support legacy JavaScript formats \`amd\`, \`iife\` and \`umd\`.`
+			);
+		}
+
+		if (generate === false) {
+			throw new PluginError(
+				'gulp-svelte',
+				'Expected `generate` option to be either `dom` or `ssr` (string), but false (boolean) was provided. gulp-svelte doesn\'t support {generate: false} as it\'s designed to emit code, not an AST.'
+			);
+		}
+
+		if (onerror !== undefined) {
+			throw new PluginError(
+				'gulp-svelte',
+				`gulp-svelte doesn't support \`onerror\` option, but ${
+					inspect(onerror)
+				} was provided. Handle errors in the gulp way instead. https://github.com/gulpjs/gulp/blob/master/docs/why-use-pump/README.md#handling-the-errors`
 			);
 		}
 	}
@@ -78,11 +95,6 @@ module.exports = function gulpSvelte(...args) {
 				}
 
 				cb(new PluginError('gulp-svelte', err));
-				return;
-			}
-
-			if (!result) {
-				cb();
 				return;
 			}
 

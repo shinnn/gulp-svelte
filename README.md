@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/shinnn/gulp-svelte.svg?branch=master)](https://travis-ci.org/shinnn/gulp-svelte)
 [![Coverage Status](https://coveralls.io/repos/github/shinnn/gulp-svelte/badge.svg?branch=master)](https://coveralls.io/github/shinnn/gulp-svelte?branch=master)
 
-[gulp](https://github.com/gulpjs/gulp) plugin to compile [Svelte](https://svelte.technology/) template to JavaScript
+[gulp](https://github.com/gulpjs/gulp) plugin to compile [Svelte](https://svelte.technology/) templates to JavaScript
 
 ## Installation
 
@@ -22,7 +22,7 @@ const gulpSvelte = require('gulp-svelte');
 
 ### gulpSvelte([*options*])
 
-*options*: `Object` ([options for Svelte compiler API](https://github.com/sveltejs/svelte#options))  
+*options*: `Object` ([options for Svelte compiler API](https://github.com/sveltejs/svelte#compiler-options))  
 Return: [`stream.Transform`](https://nodejs.org/api/stream.html#stream_class_stream_transform)
 
 ```javascript
@@ -36,7 +36,11 @@ task('default', () => {
 });
 ```
 
-If `css` option receives `false`, it also emits an extracted CSS as a separate [`Vinyl`](https://github.com/gulpjs/vinyl) object with a `.css` file extension.
+Note:
+
+* `format` option doesn't support legacy JavaScript formats `amd`, `iife` and `umd`.
+* `onerror` option is not supported.
+* If `css` option receives `false`, it also emits an extracted CSS as a separate [`Vinyl`](https://github.com/gulpjs/vinyl) object with a `.css` file extension.
 
 ```javascript
 const {dest, src, task} = require('gulp');
