@@ -30,6 +30,7 @@
 	],
 	"dependencies": {
 		"inspect-with-kind": "^1.0.5",
+		"is-plain-object": "^2.0.4",
 		"plugin-error": "^1.0.1",
 		"svelte": "^2.13.4",
 		"vinyl": "^2.2.0",

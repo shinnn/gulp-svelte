@@ -149,6 +149,12 @@ test('gulp-svelte', t => {
 
 test('Argument validation', t => {
 	t.throws(
+		() => svelte(new Uint32Array()),
+		/Expected an options object to set Svelte compiler options .*, but got Uint32Array \[\]\./u,
+		'should throw an error when the first argument is not a plain object.'
+	);
+
+	t.throws(
 		() => svelte({}, {}),
 		/Expected 0 or 1 argument \(<Object>\), but got 2 arguments\./u,
 		'should throw an error when it takes too many arguments.'

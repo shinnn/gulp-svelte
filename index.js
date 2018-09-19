@@ -1,10 +1,12 @@
 'use strict';
 
+const {Transform} = require('stream');
+
 const {compile} = require('svelte');
 const inspectWithKind = require('inspect-with-kind');
+const isPlainObject = require('is-plain-object');
 const {isVinyl} = require('vinyl');
 const PluginError = require('plugin-error');
-const {Transform} = require('stream');
 const vinylSourcemapsApply = require('vinyl-sourcemaps-apply');
 
 module.exports = function gulpSvelte(...args) {
@@ -12,6 +14,17 @@ module.exports = function gulpSvelte(...args) {
 
 	if (argLen > 1) {
 		throw new PluginError('gulp-svelte', new RangeError(`Expected 0 or 1 argument (<Object>), but got ${argLen} arguments.`));
+	} else if (argLen === 1) {
+		const options = args[0];
+
+		if (!isPlainObject(options)) {
+			throw new PluginError(
+				'gulp-svelte',
+				new TypeError(`Expected an options object to set Svelte compiler options https://github.com/sveltejs/svelte#compiler-options, but got ${
+					inspectWithKind(options)
+				}.`)
+			);
+		}
 	}
 
 	return new Transform({
