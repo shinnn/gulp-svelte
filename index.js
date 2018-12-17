@@ -91,11 +91,6 @@ ${errors.map((line, i) => `${i + 1}. ${line}`).join('\n')}`);
 		objectMode: true,
 		async transform(file, enc, cb) {
 			if (!isVinyl(file)) {
-				if (file !== null && typeof file === 'object' && typeof file.isNull === 'function') {
-					cb(new PluginError('gulp-svelte', 'gulp-svelte doesn\'t support gulp <= v3.x. Update your project to use gulp >= v4.0.0.'));
-					return;
-				}
-
 				cb(new PluginError(
 					'gulp-svelte',
 					`Expected a Vinyl file object of a Svelte template, but got a non-Vinyl value ${
