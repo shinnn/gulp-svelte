@@ -3,12 +3,14 @@
 const {inspect} = require('util');
 const {Transform} = require('stream');
 
-const {compile} = require('svelte');
+const {compile, preprocess} = require('svelte');
 const inspectWithKind = require('inspect-with-kind');
 const isPlainObject = require('is-plain-object');
 const {isVinyl} = require('vinyl');
 const PluginError = require('plugin-error');
 const vinylSourcemapsApply = require('vinyl-sourcemaps-apply');
+
+const preprocessors = new Set(['markup', 'script', 'style']);
 
 module.exports = function gulpSvelte(...args) {
 	const argLen = args.length;
@@ -17,7 +19,8 @@ module.exports = function gulpSvelte(...args) {
 		throw new PluginError('gulp-svelte', new RangeError(`Expected 0 or 1 argument (<Object>), but got ${argLen} arguments.`));
 	}
 
-	const options = args[0];
+	const [options = {}] = args;
+	const preprocessOption = options.preprocess;
 
 	if (argLen === 1) {
 		if (!isPlainObject(options)) {
@@ -29,37 +32,64 @@ module.exports = function gulpSvelte(...args) {
 			);
 		}
 
+		const errors = [];
 		const {format, generate, onerror} = options;
 
 		if (format === 'amd' || format === 'iife' || format === 'umd') {
-			throw new PluginError(
-				'gulp-svelte',
-				`Expected \`format\` option to be one of \`es\`, \`cjs\` and \`eval\`, but '${
-					format
-				}' was provided. gulp-svelte doesn't support legacy JavaScript formats \`amd\`, \`iife\` and \`umd\`.`
-			);
+			errors.push(`Expected \`format\` option to be one of \`es\`, \`cjs\` and \`eval\`, but '${
+				format
+			}' was provided. gulp-svelte doesn't support legacy JavaScript formats \`amd\`, \`iife\` and \`umd\`.`);
 		}
 
 		if (generate === false) {
-			throw new PluginError(
-				'gulp-svelte',
-				'Expected `generate` option to be either `dom` or `ssr` (string), but false (boolean) was provided. gulp-svelte doesn\'t support {generate: false} as it\'s designed to emit code, not an AST.'
-			);
+			errors.push('Expected `generate` option to be either `dom` or `ssr` (string), but false (boolean) was provided. gulp-svelte doesn\'t support {generate: false} as it\'s designed to emit code, not an AST.');
 		}
 
 		if (onerror !== undefined) {
-			throw new PluginError(
-				'gulp-svelte',
-				`gulp-svelte doesn't support \`onerror\` option, but ${
-					inspect(onerror)
-				} was provided. Handle errors in the gulp way instead. https://github.com/gulpjs/gulp/blob/master/docs/why-use-pump/README.md#handling-the-errors`
-			);
+			errors.push(`gulp-svelte doesn't support \`onerror\` option, but ${
+				inspect(onerror)
+			} was provided. Handle errors in the gulp way instead. https://github.com/gulpjs/gulp/blob/master/docs/why-use-pump/README.md#handling-the-errors`);
+		}
+
+		if (preprocessOption !== undefined) {
+			if (!isPlainObject(preprocessOption)) {
+				errors.push(`Expected \`preprocess\` option to be an <Object> to set Svelte preprocessor functions https://svelte.technology/guide#svelte-preprocess, but got ${
+					inspectWithKind(preprocessOption)
+				}.`);
+			} else {
+				for (const [key, value] of Object.entries(preprocessOption)) {
+					if (preprocessors.has(key)) {
+						if (typeof value !== 'function') {
+							errors.push(`Expected every property of \`preprocess\` option to be a <Function>, but had \`${key}\` property was a non-function value ${
+								inspectWithKind(value)
+							}.`);
+						}
+
+						continue;
+					}
+
+					errors.push(`Expected \`preprocess\` option not to have any properties except for the supported ones \`markup\`, \`script\` and \`style\`, but had ${
+						inspect(key)
+					} property.`);
+				}
+			}
+		}
+
+		const errorLen = errors.length;
+
+		if (errorLen === 1) {
+			throw new PluginError('gulp-svelte', errors[0]);
+		}
+
+		if (errorLen !== 0) {
+			throw new PluginError('gulp-svelte', `Found ${errorLen} errors in gulp-svelte options:
+${errors.map((line, i) => `${i + 1}. ${line}`).join('\n')}`);
 		}
 	}
 
 	return new Transform({
 		objectMode: true,
-		transform(file, enc, cb) {
+		async transform(file, enc, cb) {
 			if (!isVinyl(file)) {
 				if (file !== null && typeof file === 'object' && typeof file.isNull === 'function') {
 					cb(new PluginError('gulp-svelte', 'gulp-svelte doesn\'t support gulp <= v3.x. Update your project to use gulp >= v4.0.0.'));
@@ -88,7 +118,10 @@ module.exports = function gulpSvelte(...args) {
 			let result;
 
 			try {
-				result = compile(file.contents.toString(), {filename: file.path, ...options});
+				result = compile(preprocessOption ? (await preprocess(file.contents.toString(), preprocessOption)).toString() : file.contents.toString(), {
+					filename: file.path,
+					...options
+				});
 			} catch (err) {
 				if (file.path) {
 					err.fileName = file.path;

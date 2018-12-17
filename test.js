@@ -69,26 +69,32 @@ test('gulp-svelte', t => {
 			t.equal(
 				code,
 				'css-unused-selector',
-				'should support compiler options'
+				'should support compiler options.'
 			);
 		}
 	})
 	.on('error', t.fail)
 	.end(new File({contents: Buffer.from('<style>*{}</style>')}));
 
-	svelte()
+	svelte({
+		preprocess: {
+			markup({content}) {
+				return {code: content.replace('original', '</>')};
+			}
+		}
+	})
 	.on('error', err => {
 		t.equal(
 			err.message,
 			'Expected valid tag name',
-			'should emit an error when it cannot parse the file.'
+			'should preprocess contents with preprocessors.'
 		);
 		t.notOk(
 			'fileName' in err,
 			'should not include `fileName` property to the error when the object doesn\'t have filename.'
 		);
 	})
-	.end(new File({contents: Buffer.from('</>')}));
+	.end(new File({contents: Buffer.from('original')}));
 
 	svelte()
 	.on('error', ({fileName}) => {
@@ -141,22 +147,44 @@ test('Argument validation', t => {
 		'should throw an error when the first argument is not a plain object.'
 	);
 
+	try {
+		svelte({
+			generate: false,
+			onerror: noop,
+			preprocess: new Int16Array()
+		});
+	} catch ({message}) {
+		t.equal(
+			message,
+			`Found 3 errors in gulp-svelte options:
+1. Expected \`generate\` option to be either \`dom\` or \`ssr\` (string), but false (boolean) was provided. gulp-svelte doesn't support {generate: false} as it's designed to emit code, not an AST.
+2. gulp-svelte doesn't support \`onerror\` option, but [Function: noop] was provided. Handle errors in the gulp way instead. https://github.com/gulpjs/gulp/blob/master/docs/why-use-pump/README.md#handling-the-errors
+3. Expected \`preprocess\` option to be an <Object> to set Svelte preprocessor functions https://svelte.technology/guide#svelte-preprocess, but got Int16Array [].`,
+			'should throw an error when it takes invalid Svelte options.'
+		);
+	}
+
+	try {
+		svelte({
+			preprocess: {
+				script: new Map(),
+				styles: noop
+			}
+		});
+	} catch ({message}) {
+		t.equal(
+			message,
+			`Found 2 errors in gulp-svelte options:
+1. Expected every property of \`preprocess\` option to be a <Function>, but had \`script\` property was a non-function value Map {}.
+2. Expected \`preprocess\` option not to have any properties except for the supported ones \`markup\`, \`script\` and \`style\`, but had 'styles' property.`,
+			'should throw an error when it takes invalid preprocessors.'
+		);
+	}
+
 	t.throws(
 		() => svelte({format: 'umd'}),
 		/Expected `format` option to be one of `es`, `cjs` and `eval`, but 'umd' was provided\. /u,
 		'should throw an error when `format` option is `amd`, `iife` or `umd`.'
-	);
-
-	t.throws(
-		() => svelte({generate: false}),
-		/Expected `generate` option to be either `dom` or `ssr` \(string\), but false \(boolean\) /u,
-		'should throw an error when `generate` option is `false`.'
-	);
-
-	t.throws(
-		() => svelte({onerror: noop}),
-		/gulp-svelte doesn't support `onerror` option, but \[Function: noop\] was provided\. /u,
-		'should throw an error when `onerror` option is configured.'
 	);
 
 	t.throws(
