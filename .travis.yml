@@ -2,4 +2,5 @@ if: branch !~ ^v\d
 dist: xenial
 language: node_js
 node_js: node
-after_script: node_modules/.bin/nyc report | npx coveralls
+cache: npm
+after_success: node_modules/.bin/nyc report | npx coveralls
