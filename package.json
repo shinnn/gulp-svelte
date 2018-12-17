@@ -1,6 +1,6 @@
 {
 	"name": "gulp-svelte",
-	"version": "0.8.0-0",
+	"version": "0.8.0",
 	"description": "A gulp plugin to compile Svelte templates to JavaScript",
 	"repository": "shinnn/gulp-svelte",
 	"author": "Shinnosuke Watanabe (https://github.com/shinnn)",
@@ -33,16 +33,16 @@
 		"inspect-with-kind": "^1.0.5",
 		"is-plain-object": "^2.0.4",
 		"plugin-error": "^1.0.1",
-		"svelte": "^2.13.4",
+		"svelte": "^2.16.0",
 		"vinyl": "^2.2.0",
 		"vinyl-sourcemaps-apply": "^0.2.1"
 	},
 	"devDependencies": {
-		"@shinnn/eslint-config": "^6.7.1",
-		"eslint": "^5.6.0",
+		"@shinnn/eslint-config": "^6.8.7",
+		"eslint": "^5.10.0",
 		"lodash": "^4.17.11",
-		"nyc": "^13.0.1",
-		"nyc-config-common": "^1.0.0",
+		"nyc": "^13.1.0",
+		"nyc-config-common": "^1.0.1",
 		"tape": "^4.9.1"
 	},
 	"eslintConfig": {
