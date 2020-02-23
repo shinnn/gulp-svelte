@@ -3,7 +3,7 @@
 const {inspect} = require('util');
 const {Transform} = require('stream');
 
-const {compile, preprocess} = require('svelte');
+const {compile, preprocess} = require('svelte/compiler');
 const inspectWithKind = require('inspect-with-kind');
 const isPlainObject = require('is-plain-object');
 const {isVinyl} = require('vinyl');

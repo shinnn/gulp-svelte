@@ -33,17 +33,17 @@
 		"inspect-with-kind": "^1.0.5",
 		"is-plain-object": "^2.0.4",
 		"plugin-error": "^1.0.1",
-		"svelte": "^2.16.0",
+		"svelte": "^3.18.2",
 		"vinyl": "^2.2.0",
 		"vinyl-sourcemaps-apply": "^0.2.1"
 	},
 	"devDependencies": {
-		"@shinnn/eslint-config": "^6.8.7",
-		"eslint": "^5.10.0",
-		"lodash": "^4.17.11",
-		"nyc": "^13.1.0",
+		"@shinnn/eslint-config": "^6.10.4",
+		"eslint": "^5.16.0",
+		"lodash": "^4.17.15",
+		"nyc": "^13.3.0",
 		"nyc-config-common": "^1.0.1",
-		"tape": "^4.9.1"
+		"tape": "^4.13.0"
 	},
 	"eslintConfig": {
 		"extends": "@shinnn"
