@@ -2,6 +2,7 @@
 
 const {inspect} = require('util');
 const {Transform} = require('stream');
+const omit = require('lodash/omit');
 
 const {compile, preprocess} = require('svelte/compiler');
 const inspectWithKind = require('inspect-with-kind');
@@ -115,7 +116,7 @@ ${errors.map((line, i) => `${i + 1}. ${line}`).join('\n')}`);
 			try {
 				result = compile(preprocessOption ? (await preprocess(file.contents.toString(), preprocessOption)).toString() : file.contents.toString(), {
 					filename: file.path,
-					...options
+					...omit(options, ['preprocess'])
 				});
 			} catch (err) {
 				if (file.path) {
